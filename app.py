@@ -105,4 +105,22 @@ if st.button("✨ 點我得知符合機率"):
     
     st.markdown(f"""
     <div class="result-box" style="border-color: {border_color};">
-        <h2 style='color
+        <h2 style='color:{border_color}; margin:0;'>評估符合機率</h2>
+        <div style='font-size: 3rem; font-weight: bold; color:{border_color};'>{prob*100:.1f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 所得稅提醒文字微調建議
+    if is_rich:
+        st.warning("⚠️ 小提醒：您的所得條件符合「一般戶」標準。雖然仍可申請各項長照服務，但居家/日照服務的自付額將提高至 40%，且無法申請「住宿式機構補助」。")
+    
+    if prob >= 0.6:
+        st.success("✅ 很有機會喔！建議您撥打 1966 專線預約正式評估。")
+        st.balloons()
+    elif prob >= 0.4:
+        st.warning("🟡 目前在門檻邊緣。建議諮詢專業醫護或了解 UIA好厝邊 的自費照護方案。")
+    else:
+        st.info("⚪ 目前狀況還算健康。雖然領到補助的機會較低，但預防勝於治療！")
+
+st.markdown("---")
+st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您。本評估僅供參考，正式結果以政府照管專員評估為準。</div>', unsafe_allow_html=True)
