@@ -89,7 +89,7 @@ with col_check1:
 with st.expander("💰 點此評估補助比例 (選填)"):
     col_tax, col_help = st.columns([0.85, 0.15])
     with col_tax:
-        is_rich = st.checkbox("去年所得稅率達 20% 以上")
+        is_rich = st.checkbox("去年所得稅率達 20% 以上或股利所得採分開計稅者")
     with col_help:
         with st.popover("❓"):
             st.write("所得稅率僅影響『補助金額比例』，不影響『長照資格』申請。")
