@@ -124,4 +124,4 @@ if st.button("✨ 點我開始評估"):
             st.write("建議維持健康生活，或找UIA好厝邊當您安排合適服務的廠商。")
 
 st.markdown("---")
-st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您｜本評估僅供參考，正式結果以政府評估為準。</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊｜本評估僅供參考，正式結果以政府評估為準。</div>', unsafe_allow_html=True)
