@@ -128,30 +128,32 @@ if st.button("✨ 點我得知符合機率"):
     </div>
     """, unsafe_allow_html=True)
     
-    # --- 補助影響簡單化說明 ---
-    st.markdown("### 💡 補助權益小筆記")
-    c1, c2 = st.columns(2)
-    
-    with c1:
-        if is_rich:
-            st.info("**🏠 居家/社區照顧**\n\n自付額約為 **16%**。一般戶身分仍享有政府 84% 補助。")
-        else:
-            st.success("**🏠 居家/社區照顧**\n\n您可能符合**中低收入**，自付額僅 **0%~5%**！")
-
-    with c2:
-        if is_rich:
-            st.error("**🏨 住宿機構補助**\n\n因稅率達 20%，**不符合**年度 12 萬元專案補助資格。")
-        else:
-            st.success("**🏨 住宿機構補助**\n\n符合所得門檻！若入住機構，每年最高可領 **12 萬元**。")
-
-    # 結論與行動
+    # --- 修改點：僅在機率 >= 0.6 時顯示補助筆記 ---
     if prob >= 0.6:
+        st.markdown("### 💡 補助權益小筆記")
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            if is_rich:
+                st.info("**🏠 居家/社區照顧**\n\n自付額約為 **16%**。一般戶身分仍享有政府 84% 補助。")
+            else:
+                st.success("**🏠 居家/社區照顧**\n\n您可能符合**中低收入**，自付額僅 **0%~5%**！")
+
+        with c2:
+            if is_rich:
+                st.error("**🏨 住宿機構補助**\n\n因稅率達 20%，**不符合**年度 12 萬元專案補助資格。")
+            else:
+                st.success("**🏨 住宿機構補助**\n\n符合所得門檻！若入住機構，每年最高可領 **12 萬元**。")
+        
         st.success("✅ 符合機率高！建議撥打 **1966** 預約照管專員訪視。")
         st.balloons()
+
+    # --- 其他機率層級的顯示 ---
     elif prob >= 0.4:
-        st.warning("🟡 目前處於門檻邊緣，建議諮詢專業醫護或了解**UIA好厝邊**的服務安排 。")
+        st.warning("🟡 目前處於門檻邊緣，建議諮詢專業醫護或了解**UIA好厝邊**的服務安排。")
     else:
         st.info("⚪ 目前狀況良好。好厝邊建議維持運動習慣，預防重於治療！")
+
 
 st.markdown("---")
 st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您｜本評估僅供參考，正式結果以政府評估為準。</div>', unsafe_allow_html=True)
