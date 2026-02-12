@@ -103,16 +103,71 @@ mobility_desc = st.select_slider("", options=["健步如飛", "需要攙扶", "�
 mobility_map = {"健步如飛": "完全自理", "需要攙扶": "需部分扶持", "需輪椅": "需他人推輪椅", "臥床": "完全臥床"}
 mobility = mobility_map[mobility_desc]
 
-# 5. 邏輯回歸運算
+# 5. 邏輯回歸運算 (配合長照 3.0 最新法規：失智全年齡、PAC 收案)
 def calculate_prob_3_0(age, is_ab, has_card, is_pac, is_dem, mob_score):
     z = -4.5 
-    if (age >= 65) or (is_ab and age >= 55) or (is_dem == "有，已確診或疑似" and age >= 50):
-        z += 2.0
-    if has_card or is_pac:
+    
+    # 【收案對象修正】
+    # 1. 失智症 (is_dem) 與 身障 (has_card) 在 3.0 中為重點收案，且失智已無年齡限制
+    if (is_dem == "有，已確診或疑似") or has_card:
+        z += 3.5
+    
+    # 2. 急性後期照護計畫 (is_pac) 為 3.0 新增重點對象，銜接機率極高
+    if is_pac:
         z += 3.0
-    mob_weight = {"完全自理": 0, "需部分扶持": 1.5, "需他人推輪椅": 2.5, "完全臥床": 4.0}
+    
+    # 3. 傳統年齡門檻 (65歲以上老人 或 55歲以上原住民)
+    if (age >= 65) or (is_ab and age >= 55):
+        z += 2.0
+        
+    # 4. 失能狀況 (CMS 等級模擬)
+    # 權重分配：臥床 > 輪椅 > 需人攙扶
+    mob_weight = {"完全自理": 0, "需部分扶持": 1.5, "需他人推輪椅": 2.5, "完全臥床": 4.5}
     z += mob_weight[mob_score]
+    
     return 1 / (1 + np.exp(-z))
+
+# 6. 結果呈現 (文字修正)
+if st.button("✨ 點我得知符合機率"):
+    with st.spinner('好厝邊分析中...'):
+        prob = calculate_prob_3_0(age, is_aboriginal, has_disability_card, is_pac, dementia, mobility)
+    
+    res_color = "#E67E22" if is_rich else "#F39800"
+    
+    st.markdown(f"""
+    <div class="result-box" style="border-color: {res_color};">
+        <h2 style='color:{res_color}; margin:0;'>評估符合機率</h2>
+        <div style='font-size: 3.5rem; font-weight: bold; color:{res_color};'>{prob*100:.1f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if prob >= 0.6:
+        st.markdown("### 💡 補助權益小筆記")
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            if is_rich:
+                st.info("**🏠 居家/社區照顧**\n\n自付額約為 **16%**。一般戶身分仍享有政府補助。")
+            else:
+                st.success("**🏠 居家/社區照顧**\n\n您可能符合**中低收入**，自付額僅 **0%~5%**！")
+
+        with c2:
+            if is_rich:
+                st.error("**🏨 住宿機構補助**\n\n因符合排富條款（稅率20%），**不符合** 12 萬補助資格。")
+            else:
+                st.success("**🏨 住宿機構補助**\n\n符合所得門檻！每年最高可領 **12 萬元**。")
+        
+        st.success("✅ 符合機率高！建議撥打 **1966** 預約照管專員訪視。")
+        st.balloons()
+
+    elif prob >= 0.4:
+        st.warning("🟡 目前處於門檻邊緣，建議諮詢專業醫護或了解 **UIA好厝邊** 的服務安排。")
+    else:
+        # 特別針對 PAC 提供提示
+        if is_pac:
+             st.info("⚪ 雖然目前評估機率較低，但您具有 PAC 身分，建議仍可聯繫醫院出備小組了解銜接。")
+        else:
+             st.info("⚪ 目前狀況良好。好厝邊建議維持運動習慣，預防重於治療！")
 
 # 6. 結果呈現
 if st.button("✨ 點我得知符合機率"):
