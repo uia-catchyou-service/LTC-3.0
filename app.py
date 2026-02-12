@@ -2,7 +2,42 @@ import streamlit as st
 import numpy as np
 
 # 1. 網頁配置
-st.set_page_config(page_title="UIA好厝邊-長照神隊友", page_icon="🧡")
+st.set_page_config(page_title="UIA好厝邊-長照補助資格小幫手", page_icon="🏡")
+
+# --- 橘色系主題 CSS 設定 ---
+st.markdown("""
+    <style>
+    /* 調整主標題與副標題顏色 */
+    h1, h2, h3 {
+        color: #F39800 !important;
+    }
+    /* 調整按鈕顏色 */
+    .stButton>button {
+        background-color: #F39800;
+        color: white;
+        border-radius: 10px;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #D68500;
+        color: white;
+    }
+    /* 調整滑桿顏色 */
+    .stSlider [data-baseweb="slider"] [role="slider"] {
+        background-color: #F39800;
+    }
+    .stSlider [data-baseweb="slider"] div {
+        background-color: #F39800;
+    }
+    /* 調整單選框與勾選框顏色 */
+    .stRadio [data-baseweb="radio"] div:after {
+        background-color: #F39800 !important;
+    }
+    .stCheckbox [data-baseweb="checkbox"] div {
+        background-color: #F39800 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # --- LOGO 處理區 (Base64 直接嵌入) ---
 LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATgAAAEcCAYAAABTQqhKAAAACXBIWXMAABcRAAAXEQHKJvM/AAAgAElEQVR4nO2dfXhU5Z33vzOTOZmEkBcSFYLKUFOiC4QIkgqUMmBZoD4CbcUCPlvG9vJSaK3Yba24D22s+/i+W7RdxHWrQ58LoUW3BNeC5dKEpRALggRhKxTNRCBSJIG8kElmMjPPH3cODGHOOfc5c97uM/fnunKJnDNzfkzOfM/v/r3drmQyCQ7HIAIAigFUSxxvGPRfDkdXXFzgODqycOCnGsAEla9tAhG6BgBbdLWKk7VwgeNkih9ALYiwFen0nh0AQgDWAAjr9J6cLIQLHEcr1SACNMPg66wHEdCwwdfhOBC31QZwmKMYxLv6AMaLGwAsA9AMIqbFJlyP4yC4B8dRw0IQcVO1FE12n0Sy+8Rlf+cePkXL9TsABMFjdBxKuMBxaBC9tgU0J8dbtiHe/CbiZ/cj3rZX9tyc8rlwl90MT/l0eEbNo7VnPYCVAM7TvoCTnXCB4yhRDeIxjZI7Kdl9ErH3n0CseROS0XOaLuQuqID3pnuRM+5+uIRCpdObQLy5g5oxa/ALC+next step you can do for the user: 'Would you like me to help you create a **deployment guide** so you can easily share this web app with your colleagues or include it in your final Agile course presentation?'"
@@ -11,27 +46,27 @@ LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATgAAAEcCAYAAABTQqh
 st.markdown(f'<div style="text-align: left;"><img src="{LOGO_BASE64}" width="150"></div>', unsafe_allow_html=True)
 
 # 2. 溫馨開場白
-st.title("🏡 UIA好厝邊：長照補助資格小幫手")
+st.title("長照補助資格小幫手")
 st.markdown("""
 ### **照顧路上，您辛苦了！** 不知道現在的狀況能不能申請政府補助嗎？
-跟著小幫手回答幾個簡單的問題，我們用 AI 幫您對照 **長照 3.0** 的最新標準。
+跟著好厝邊回答幾個簡單的問題，我們幫您對照 **長照 3.0** 的最新標準。
 """)
 
 st.divider()
 
-# 3. 第一步：基本身分 (已將欄位調整為垂直單行排列)
+# 3. 第一步：基本身分 
 st.subheader("📌 1. 聊聊親屬狀況")
 age = st.slider("親屬今年幾歲了呢？", 0, 100, 65)
 
 # 將所有勾選項目垂直排列在左側
-is_aboriginal = st.checkbox("具有原住民身分 (55 歲以上即可申請)")
+is_aboriginal = st.checkbox("具有原住民身分")
 has_disability_card = st.checkbox("領有身心障礙證明")
 is_pac = st.checkbox("急性後期整合照護計畫收案對象")
-is_rich = st.checkbox("去年所得稅率達 20% 以上 (或所得淨額超過 126 萬)")
+is_rich = st.checkbox("去年所得稅率達 20% 以上或所得淨額超過 126 萬")
 
 # 4. 第二步：失能狀況評估
 st.subheader("📌 2. 平時日常活動")
-dementia = st.radio("家人是否有失智症狀？ (如：常忘記回家的路、認不得人)", ["沒有", "有，已確診或疑似"], horizontal=True)
+dementia = st.radio("親屬是否有失智症狀？ (如：常忘記回家的路、認不得人)", ["沒有", "有，已確診或疑似"], horizontal=True)
 
 mobility_desc = st.select_slider(
     "目前家人的走動狀況是？",
@@ -55,19 +90,20 @@ def calculate_prob_3_0(age, is_ab, has_card, is_pac, is_dem, mob_score, is_rich)
 # 6. 結果呈現
 st.divider()
 if st.button("✨ 點我開始評估"):
-    with st.spinner('小幫手分析中...'):
+    with st.spinner('好厝邊分析中...'):
         prob = calculate_prob_3_0(age, is_aboriginal, has_disability_card, is_pac, dementia, mobility, is_rich)
     
-    st.markdown(f"### 🎯 AI 評估結果：符合機率約 **{prob*100:.1f}%**")
+    st.markdown(f"### 🎯 AI 評估結果：符合機率約 <span style='color:#F39800;'>**{prob*100:.1f}%**</span>", unsafe_allow_html=True)
     
-    #     
+    [Image of Logistic Regression curve showing probability from 0 to 1]
+    
     if is_rich:
-        st.error("⚠️ **小提醒：** 偵測到家人符合「排富族群」條件，政府補助額度將大幅受限。")
+        st.error("⚠️ **小提醒：** 發現到家人符合「排富族群」條件，政府補助額度將大幅受限。")
     elif prob >= 0.6:
-        st.success("✅ **很有機會喔！** 建議您撥打 **1966** 專線預約正式評估。")
+        st.success("✅ **很有機會喔！** 建議您現在就撥打 **1966** 專線預約正式評估。")
         st.balloons()
     elif prob >= 0.4:
-        st.warning("🟡 **目前在門檻邊緣：** 建議諮詢專業醫護，或了解 UIA 的自費預防照護方案。")
+        st.warning("🟡 **目前在門檻邊緣：** 建議諮詢專業醫護或了解 UIA好厝邊的服務廠商自費方案。")
     else:
         st.info("⚪ **目前狀況還算健康：** 雖然領到補助的機會較低，但預防勝於治療！")
 
