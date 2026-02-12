@@ -116,4 +116,14 @@ if st.button("✨ 點我得知符合機率"):
             else: st.success("**🏠 居家/社區照顧**\n\n您可能符合**中低收入**，自付額僅 **0%~5%**！")
         with col2:
             if is_rich: st.error("**🏨 住宿機構補助**\n\n因稅率達 20%，**不符合** 12 萬補助。")
-            else: st.success("**🏨 住宿機構補助**\n\n符合所得
+            else: st.success("**🏨 住宿機構補助**\n\n符合所得門檻！最高可領 **12 萬元**。")
+        st.success("✅ 符合機率高！建議撥打 **1966** 預約訪視。")
+        st.balloons()
+    else:
+        if is_pac:
+             st.info("⚪ 目前雖然自理能力尚可，但因有 PAC 身分，建議仍聯繫醫院出院準備小組。")
+        else:
+             st.info("⚪ 目前狀況良好。好厝邊建議維持運動習慣，預防重於治療！")
+
+st.markdown("---")
+st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您｜本評估僅供參考，正式結果以政府評估為準。</div>', unsafe_allow_html=True)
