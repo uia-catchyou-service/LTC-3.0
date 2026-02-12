@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered" 
 )
 
-# --- CSS 優化 (加入即時反饋與結果框樣式) ---
+# --- CSS 優化 (品牌配色與排版) ---
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
@@ -17,7 +17,7 @@ st.markdown("""
     h1 { color: #F39800 !important; font-size: 1.8rem !important; text-align: center; }
     .main-intro { text-align: center; color: #555; line-height: 1.6; margin-bottom: 1.5rem; }
 
-    /* 卡片設計 */
+    /* 卡片設計：讓輸入項更有層次 */
     .stCheckbox, .stRadio, .stSlider, .stSelectbox {
         background-color: #FDF7EF;
         padding: 15px;
@@ -26,7 +26,7 @@ st.markdown("""
         border: 1px solid #FFE4B5;
     }
 
-    /* 按鈕 */
+    /* 調整按鈕樣式 */
     .stButton>button {
         background-color: #F39800;
         color: white;
@@ -39,9 +39,7 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
-    /* 問號說明的字體 */
-    .help-text { font-size: 0.85rem; color: #D68500; margin-top: -10px; margin-bottom: 10px; padding-left: 5px; }
-    
+    /* 結果框樣式 */
     .result-box {
         text-align: center;
         padding: 20px;
@@ -49,6 +47,14 @@ st.markdown("""
         border: 2px solid #F39800;
         border-radius: 20px;
         margin-top: 20px;
+    }
+
+    /* 讓折疊說明的文字小一點 */
+    .stExpander {
+        border: none !important;
+        background-color: transparent !important;
+        margin-top: -15px;
+        margin-bottom: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -70,9 +76,10 @@ is_aboriginal = st.checkbox("具有原住民身分")
 has_disability_card = st.checkbox("領有身心障礙證明")
 is_pac = st.checkbox("急性後期整合照護計畫收案")
 
-# 所得稅部分優化
+# --- 所得稅選項優化：右側隱藏說明 ---
 is_rich = st.checkbox("去年所得稅率達 20% 以上或所得淨額超過 126 萬")
-st.markdown('<div class="help-text">❓ 此選項僅影響自付額比例與特定補助，不影響失能資格判定。</div>', unsafe_allow_html=True)
+with st.expander("❓ 這是什麼意思？點開查看說明"):
+    st.info("此選項僅影響政府補助比例（如自付額）與特定補助項目，並**不會**影響您的失能資格判定標準。")
 
 # 4. 第二步：失能狀況評估
 st.subheader("2. 觀察日常活動")
@@ -83,9 +90,8 @@ mobility_desc = st.select_slider("", options=["健步如飛", "需要攙扶", "�
 mobility_map = {"健步如飛": "完全自理", "需要攙扶": "需部分扶持", "需輪椅": "需他人推輪椅", "臥床": "完全臥床"}
 mobility = mobility_map[mobility_desc]
 
-# 5. 邏輯回歸運算 (邏輯優化：所得稅不扣分，回歸資格判定)
+# 5. 邏輯回歸運算 (資格判定不含排富因素)
 def calculate_prob_3_0(age, is_ab, has_card, is_pac, is_dem, mob_score):
-    # 這裡移除 is_rich 的懲罰項，確保「資格」預測的準確性
     z = -4.5 
     if (age >= 65) or (is_ab and age >= 55) or (is_dem == "有，已確診或疑似" and age >= 50):
         z += 2.0
@@ -97,10 +103,10 @@ def calculate_prob_3_0(age, is_ab, has_card, is_pac, is_dem, mob_score):
 
 # 6. 結果呈現
 if st.button("✨ 點我得知符合機率"):
-    with st.spinner('好厝邊正在分析中...'):
+    with st.spinner('好厝邊分析中...'):
         prob = calculate_prob_3_0(age, is_aboriginal, has_disability_card, is_pac, dementia, mobility)
     
-    # 根據是否勾選所得稅來決定框格顏色 (UI 優化)
+    # 動態調整邊框顏色
     border_color = "#E67E22" if is_rich else "#F39800"
     
     st.markdown(f"""
@@ -110,7 +116,6 @@ if st.button("✨ 點我得知符合機率"):
     </div>
     """, unsafe_allow_html=True)
     
-    # 所得稅提醒文字微調建議
     if is_rich:
         st.warning("⚠️ 小提醒：您的所得條件符合「一般戶」標準。雖然仍可申請各項長照服務，但居家/日照服務的自付額將提高至 40%，且無法申請「住宿式機構補助」。")
     
@@ -120,7 +125,7 @@ if st.button("✨ 點我得知符合機率"):
     elif prob >= 0.4:
         st.warning("🟡 目前在門檻邊緣。建議諮詢專業醫護或了解 UIA好厝邊 的自費照護方案。")
     else:
-        st.info("⚪ 目前狀況還算健康。雖然領到補助的機會較低，但預防勝於治療！")
+        st.info("⚪ 目前狀況還算健康。雖然預防勝於治療，建議參考 UIA 的健康促進課程。")
 
 st.markdown("---")
 st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您。本評估僅供參考，正式結果以政府照管專員評估為準。</div>', unsafe_allow_html=True)
