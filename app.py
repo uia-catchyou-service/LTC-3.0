@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered" 
 )
 
-# --- CSS 強化版 (優化彈出視窗樣式) ---
+# --- CSS 強化版 ---
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
@@ -39,7 +39,6 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
-    /* 調整 Popover (問號) 的外觀，使其更精簡 */
     .stPopover > button {
         border: none !important;
         background-color: transparent !important;
@@ -53,13 +52,22 @@ st.markdown("""
         background-color: #FFF;
         border: 2px solid #F39800;
         border-radius: 20px;
-        margin-top: 20px;
+        margin: 20px 0;
+    }
+    
+    /* 補助小卡片樣式 */
+    .subsidy-card {
+        padding: 15px;
+        border-radius: 10px;
+        margin: 5px 0;
+        border-left: 5px solid #F39800;
+        background-color: #f9f9f9;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # --- LOGO 處理 ---
-LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATgAAAEcCAYAAABTQqhKAAAACXBIWXMAABcRAAAXEQHKJvM/AAAgAElEQVR4nO2dfXhU5Z33vzOTOZmEkBcSFYLKUFOiC4QIkgqUMmBZoD4CbcUCPlvG9vJSaK3Yba24D22s+/i+W7RdxHWrQ58LoUW3BNeC5dKEpRALggRhKxTNRCBSJIG8kElmMjPPH3cODGHOOfc5c97uM/fnunKJnDNzfkzOfM/v/r3drmQyCQ7HIAIAigFUSxxvGPRfDkdXXFzgODqycOCnGsAEla9tAhG6BgBbdLWKk7VwgeNkih9ALYiwFen0nh0AQgDWAAjr9J6cLIQLHEcr1SACNMPg66wHEdCwwdfhOBC31QZwmKMYxLv6AMaLGwAsA9AMIqbFJlyP4yC4B8dRw0IQcVO1FE12n0Sy+8Rlf+cePkXL9TsABMFjdBxKuMBxaBC9tgU0J8dbtiHe/CbiZ/cj3rZX9tyc8rlwl90MT/l0eEbNo7VnPYCVAM7TvoCTnXCB4yhRDeIxjZI7Kdl9ErH3n0CseROS0XOaLuQuqID3pnuRM+5+uIRCpdObQLy5g5oxa/ALC+next step you can do for the user: 'Would you like me to help you create a **deployment guide** so you can easily share this web app with your colleagues or include it in your final Agile course presentation?'"
+LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATgAAAEcCAYAAABTQqhKAAAACXBIWXMAABcRAAAXEQHKJvM/AAAgAElEQVR4nO2dfXhU5Z33vzOTOZmEkBcSFYLKUFOiC4QIkgqUMmBZoD4CbcUCPlvG9vJSaK3Yba24D22s+/i+W7RdxHWrQ58LoUW3BNeC5dKEpRALggRhKxTNRCBSJIG8kElmMjPPH3cODGHOOfc5c97uM/fnunKJnDNzfkzOfM/v/r3drmQyCQ7HIAIAigFUSxxvGPRfDkdXXFzgODqycOCnGsAEla9tAhG6BgBbdLWKk7VwgeNkih9ALYiwFen0nh0AQgDWAAjr9J6cLIQLHEcr1SACNMPg66wHEdCwwdfhOBC31QZwmKMYxLv6AMaLGwAsA9AMIqbFJlyP4yC4B8dRw0IQcVO1FE12n0Sy+8Rlf+cePkXL9TsABMFjdBxKuMBxaBC9tgU0J8dbtiHe/CbiZ/cj3rZX9tyc8rlwl90MT/l0eEbNo7VnPYCVAM7TvoCTnXCB4yhRDeIxjZI7Kdl9ErH3n0CseROS0XOaLuQuqID3pnuRM+5+uIRCpdObQLy5g5oxa/ALC+next"
 
 st.markdown(f'<div style="text-align: center; margin-bottom: 10px;"><img src="{LOGO_BASE64}" width="120"></div>', unsafe_allow_html=True)
 
@@ -71,18 +79,21 @@ st.markdown('<div class="main-intro">照顧路上，您辛苦了！<br>跟著好
 st.subheader("1. 瞭解基本狀況")
 age = st.slider("親屬年齡", 0, 100, 65)
 
-is_aboriginal = st.checkbox("具有原住民身分")
-has_disability_card = st.checkbox("領有身心障礙證明")
-is_pac = st.checkbox("急性後期整合照護計畫收案")
+col_check1, col_check2 = st.columns(2)
+with col_check1:
+    is_aboriginal = st.checkbox("具有原住民身分")
+    has_disability_card = st.checkbox("領有身心障礙證明")
+with col_check2:
+    is_pac = st.checkbox("急性後期照護計畫(PAC)")
 
-# --- 優化後的所得稅欄位：選項與問號並排 ---
-col_tax, col_help = st.columns([0.85, 0.15])
-with col_tax:
-    is_rich = st.checkbox("去年所得稅率達 20% 以上")
-with col_help:
-    # 使用 popover 製作隱藏式說明
-    with st.popover("❓"):
-        st.write("此選項僅影響自付額比例與特定補助申請（如：自付額提高至 40%），不影響失能資格判定。")
+# 排富詢問區
+with st.expander("💰 點此評估補助比例 (選填)"):
+    col_tax, col_help = st.columns([0.85, 0.15])
+    with col_tax:
+        is_rich = st.checkbox("去年所得稅率達 20% 以上")
+    with col_help:
+        with st.popover("❓"):
+            st.write("所得稅率僅影響『補助金額比例』，不影響『長照資格』申請。")
 
 # 4. 第二步：失能狀況評估
 st.subheader("2. 觀察日常活動")
@@ -93,7 +104,7 @@ mobility_desc = st.select_slider("", options=["健步如飛", "需要攙扶", "�
 mobility_map = {"健步如飛": "完全自理", "需要攙扶": "需部分扶持", "需輪椅": "需他人推輪椅", "臥床": "完全臥床"}
 mobility = mobility_map[mobility_desc]
 
-# 5. 邏輯回歸運算 (iPAS AI 核心概念：機率預測)
+# 5. 邏輯回歸運算
 def calculate_prob_3_0(age, is_ab, has_card, is_pac, is_dem, mob_score):
     z = -4.5 
     if (age >= 65) or (is_ab and age >= 55) or (is_dem == "有，已確診或疑似" and age >= 50):
@@ -109,27 +120,39 @@ if st.button("✨ 點我得知符合機率"):
     with st.spinner('好厝邊分析中...'):
         prob = calculate_prob_3_0(age, is_aboriginal, has_disability_card, is_pac, dementia, mobility)
     
-    # 
-    
-    border_color = "#E67E22" if is_rich else "#F39800"
+    res_color = "#E67E22" if is_rich else "#F39800"
     
     st.markdown(f"""
-    <div class="result-box" style="border-color: {border_color};">
-        <h2 style='color:{border_color}; margin:0;'>評估符合機率</h2>
-        <div style='font-size: 3rem; font-weight: bold; color:{border_color};'>{prob*100:.1f}%</div>
+    <div class="result-box" style="border-color: {res_color};">
+        <h2 style='color:{res_color}; margin:0;'>評估符合機率</h2>
+        <div style='font-size: 3.5rem; font-weight: bold; color:{res_color};'>{prob*100:.1f}%</div>
     </div>
     """, unsafe_allow_html=True)
     
-    if is_rich:
-        st.warning("⚠️ 小提醒：您的所得條件符合「一般戶」標準。雖然仍可申請各項長照服務，但居家/日照服務的自付額將提高至 40%，且無法申請「住宿式機構補助」。")
+    # --- 補助影響簡單化說明 ---
+    st.markdown("### 💡 補助權益小筆記")
+    c1, c2 = st.columns(2)
     
+    with c1:
+        if is_rich:
+            st.info("**🏠 居家/社區照顧**\n\n自付額約為 **16%**。一般戶身分仍享有政府 84% 補助。")
+        else:
+            st.success("**🏠 居家/社區照顧**\n\n您可能符合**中低收入**，自付額僅 **0%~5%**！")
+
+    with c2:
+        if is_rich:
+            st.error("**🏨 住宿機構補助**\n\n因稅率達 20%，**不符合**年度 12 萬元專案補助資格。")
+        else:
+            st.success("**🏨 住宿機構補助**\n\n符合所得門檻！若入住機構，每年最高可領 **12 萬元**。")
+
+    # 結論與行動
     if prob >= 0.6:
-        st.success("✅ 很有機會喔！建議您撥打 1966 專線預約正式評估。")
+        st.success("✅ 符合機率高！建議撥打 **1966** 預約照管專員訪視。")
         st.balloons()
     elif prob >= 0.4:
-        st.warning("🟡 目前在門檻邊緣。建議諮詢專業醫護或了解 UIA好厝邊 的自費照護方案。")
+        st.warning("🟡 目前處於門檻邊緣，建議諮詢專業醫護或了解**UIA好厝邊**的服務安排 。")
     else:
-        st.info("⚪ 目前狀況還算健康。雖然領到補助的機會較低，但預防勝於治療！")
+        st.info("⚪ 目前狀況良好。好厝邊建議維持運動習慣，預防重於治療！")
 
 st.markdown("---")
-st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您。本評估僅供參考，正式結果以政府照管專員評估為準。</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 蓋解憂(Catch You)專案｜UIA好厝邊關心您</div>', unsafe_allow_html=True)
