@@ -15,7 +15,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.markdown("<h1>長照補助資格測評器</h1>", unsafe_allow_html=True)
-st.markdown('<div class="main-intro">照顧路上，您辛苦了！<br>跟著好厝邊簡單評估長照 3.0 資格。</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-intro" style="text-align: center;">照顧路上，您辛苦了！<br>跟著好厝邊簡單評估長照 3.0 資格。</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # 3. 第一步：基本身分 (收案對象確認)
