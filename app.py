@@ -25,15 +25,15 @@ age = st.slider("親屬年齡", 0, 125, 65)
 
 col1, col2 = st.columns(2)
 with col1:
-    is_aboriginal = st.checkbox("具有原住民身分 (55歲以上適用)")
-    has_disability_card = st.checkbox("領有身心障礙證明 (115年起納入)")
+    is_aboriginal = st.checkbox("具有原住民身分")
+    has_disability_card = st.checkbox("領有身心障礙證明")
 with col2:
-    is_pac = st.checkbox("急性後期整合照護計畫 (PAC) 對象")
-    dementia = st.checkbox("經醫師診斷為失智症者 (不限年齡)")
+    is_pac = st.checkbox("急性後期整合照護計畫對象")
+    dementia = st.checkbox("經醫師診斷為失智症者")
 
 is_rich = False
-with st.expander("💰 點此評估補助比例 (選填排富條款)"):
-    is_rich = st.checkbox("去年所得稅率達 20% 以上或股利分開計稅者")
+with st.expander("💰 點此評估補助比例 (選填)"):
+    is_rich = st.checkbox("去年所得稅率達20%以上或股利分開計稅者")
 
 # ---------------------------------------------------------
 # 4. 第二步：日常生活評估 (18題必選防呆)
@@ -121,7 +121,7 @@ if st.button("✨ 點我開始評估"):
             st.write("雖然您屬於收案族群，但目前自理能力尚佳。若狀況惡化，請隨時重新評估。")
         else:
             st.info("⚪ **目前尚未符合長照 3.0 資格。**")
-            st.write("建議維持健康生活，或洽詢 UIA好厝邊 的預防性照護資訊。")
+            st.write("建議維持健康生活，或找UIA好厝邊當您安排合適服務的廠商。")
 
 st.markdown("---")
-st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊：蓋解憂(Catch You)專案團隊</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊關心您｜本評估僅供參考，正式結果以政府評估為準。</div>', unsafe_allow_html=True)
