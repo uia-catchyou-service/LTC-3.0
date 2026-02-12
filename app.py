@@ -46,7 +46,6 @@ col_check1, col_check2 = st.columns(2)
 with col_check1:
     is_aboriginal = st.checkbox("具有原住民身分")
     has_disability_card = st.checkbox("領有身心障礙證明")
-with col_check2:
     is_pac = st.checkbox("急性後期照護計畫(PAC)")
 
 with st.expander("💰 點此評估補助比例 (選填)"):
