@@ -81,11 +81,11 @@ LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATgAAAEcCAYAAABTQqh
 st.markdown(f'<div style="text-align: center; margin-bottom: 10px;"><img src="{LOGO_BASE64}" width="120"></div>', unsafe_allow_html=True)
 
 # 2. 溫馨開場白
-st.markdown("<h1>長照補助資格小幫手</h1>", unsafe_allow_html=True)
+st.markdown("<h1>長照補助資格測評器</h1>", unsafe_allow_html=True)
 st.markdown('<div class="main-intro">照顧路上，您辛苦了！<br>跟著好厝邊簡單評估長照 3.0 資格。</div>', unsafe_allow_html=True)
 
 # 3. 第一步：基本身分 
-st.subheader("📌 1. 瞭解基本狀況")
+st.subheader("1. 瞭解基本狀況")
 age = st.slider("親屬年齡", 0, 100, 65)
 
 # 使用垂直排列，增加手機點擊間距
@@ -95,7 +95,7 @@ is_pac = st.checkbox("急性後期整合照護計畫收案")
 is_rich = st.checkbox("去年所得稅率達 20% 以上或所得淨額超過126萬")
 
 # 4. 第二步：失能狀況評估
-st.subheader("📌 2. 觀察日常活動")
+st.subheader("2. 觀察日常活動")
 dementia = st.radio("是否有失智症狀？ (如：認不得人、常迷路)", ["沒有", "有，已確診或疑似"], horizontal=True)
 
 # 針對手機調整 Slider 說明文字位置
