@@ -32,7 +32,7 @@ st.markdown('<div class="main-intro">照顧路上，您辛苦了！<br>跟著好
 
 # 3. 第一步：基本身分
 st.subheader("1. 瞭解基本狀況")
-age = st.slider("親屬年齡", 0, 100, 65)
+age = st.slider("親屬年齡", 0, 125, 65)
 is_rich = False # 初始化
 
 col_check1, col_check2 = st.columns(2)
