@@ -58,7 +58,7 @@ st.markdown("#### 📍 居家生活 (移動與家務)")
 b1 = st.selectbox("移位狀況：", [placeholder, "可獨立完成", "需些微協助", "需大半協助", "需兩人幫忙"], key="b1")
 b2 = st.selectbox("步行狀況：", [placeholder, "健步如飛(50公尺以上)", "需扶持或口頭指導", "需推輪椅", "完全臥床"], key="b2")
 b3 = st.selectbox("上下樓梯：", [placeholder, "可自行上下", "需稍微協助", "無法上下"], key="b3")
-b4 = st.selectbox("上街購物：", [placeholder, "獨力完成", "獨立買日用品", "需人陪同", "完全無法"], key="b4")
+b4 = st.selectbox("上街購物：", [placeholder, "獨立完成", "獨立買日用品", "需人陪同", "完全無法"], key="b4")
 b5 = st.selectbox("外出活動：", [placeholder, "能搭公車捷運", "需人陪伴搭車", "完全不能"], key="b5")
 b6 = st.selectbox("食物烹調：", [placeholder, "獨力完成", "可加熱飯菜", "需人煮好"], key="b6")
 
