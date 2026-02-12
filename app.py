@@ -4,47 +4,6 @@ import numpy as np
 # 1. 網頁配置
 st.set_page_config(page_title="UIA好厝邊-長照補助資格小幫手", page_icon="🏡")
 
-# --- 橘色系主題 CSS 設定 ---
-st.markdown("""
-    <style>
-    /* 調整主標題與副標題顏色 */
-    h1, h2, h3 {
-        color: #F39800 !important;
-    }
-    /* 調整按鈕顏色 */
-    .stButton>button {
-        background-color: #F39800;
-        color: white;
-        border-radius: 10px;
-        border: none;
-    }
-    .stButton>button:hover {
-        background-color: #D68500;
-        color: white;
-    }
-    /* 調整滑桿顏色 */
-    .stSlider [data-baseweb="slider"] [role="slider"] {
-        background-color: #F39800;
-    }
-    .stSlider [data-baseweb="slider"] div {
-        background-color: #F39800;
-    }
-    /* 調整單選框與勾選框顏色 */
-    .stRadio [data-baseweb="radio"] div:after {
-        background-color: #F39800 !important;
-    }
-    .stCheckbox [data-baseweb="checkbox"] div {
-        background-color: #F39800 !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# --- LOGO 處理區 (Base64 直接嵌入) ---
-LOGO_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATgAAAEcCAYAAABTQqhKAAAACXBIWXMAABcRAAAXEQHKJvM/AAAgAElEQVR4nO2dfXhU5Z33vzOTOZmEkBcSFYLKUFOiC4QIkgqUMmBZoD4CbcUCPlvG9vJSaK3Yba24D22s+/i+W7RdxHWrQ58LoUW3BNeC5dKEpRALggRhKxTNRCBSJIG8kElmMjPPH3cODGHOOfc5c97uM/fnunKJnDNzfkzOfM/v/r3drmQyCQ7HIAIAigFUSxxvGPRfDkdXXFzgODqycOCnGsAEla9tAhG6BgBbdLWKk7VwgeNkih9ALYiwFen0nh0AQgDWAAjr9J6cLIQLHEcr1SACNMPg66wHEdCwwdfhOBC31QZwmKMYxLv6AMaLGwAsA9AMIqbFJlyP4yC4B8dRw0IQcVO1FE12n0Sy+8Rlf+cePkXL9TsABMFjdBxKuMBxaBC9tgU0J8dbtiHe/CbiZ/cj3rZX9tyc8rlwl90MT/l0eEbNo7VnPYCVAM7TvoCTnXCB4yhRDeIxjZI7Kdl9ErH3n0CseROS0XOaLuQuqID3pnuRM+5+uIRCpdObQLy5g5oxa/ALC+next step you can do for the user: 'Would you like me to help you create a **deployment guide** so you can easily share this web app with your colleagues or include it in your final Agile course presentation?'"
-
-# 顯示品牌 Logo
-st.markdown(f'<div style="text-align: left;"><img src="{LOGO_BASE64}" width="150"></div>', unsafe_allow_html=True)
-
 # 2. 溫馨開場白
 st.title("長照補助資格小幫手")
 st.markdown("""
