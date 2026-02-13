@@ -4,7 +4,6 @@ import numpy as np
 # 1. 網頁配置
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
-# --- CSS 樣式優化 ---
 # --- CSS 樣式優化 (針對手機版優化) ---
 st.markdown("""
     <style>
@@ -19,10 +18,10 @@ st.markdown("""
     /* 下拉選單文字大小調整 */
     .stSelectbox label p {
         font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
-        white-space: normal !important; /* 確保長標籤能自動換行不被切掉 */
+        white-space: normal !important;
     }
 
-    /* 調整選單選項內的字體，避免在手機上爆掉 */
+    /* 調整選單選項內的字體 */
     div[data-baseweb="select"] > div {
         font-size: 0.9rem !important;
     }
@@ -39,7 +38,7 @@ st.markdown("""
         word-break: break-all;
     }
 
-    /* 免責聲明：縮小字體並確保完整呈現 */
+    /* 免責聲明 */
     .disclaimer-text {
         text-align: justify;
         font-size: 0.7rem !important;
@@ -49,6 +48,11 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
+# 這裡就是被刪除的標題部分
+st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; color: #666;">照顧路上，您辛苦了！跟著好厝邊簡單預估長照 3.0 補助資格。</div>', unsafe_allow_html=True)
+
 # ---------------------------------------------------------
 # 2. 10 項溫馨題目數據
 # ---------------------------------------------------------
@@ -70,7 +74,7 @@ questions = {
 }
 
 # ---------------------------------------------------------
-# 3. 第一步：基本身分 (包含 PAC 說明)
+# 3. 第一步：基本身分
 # ---------------------------------------------------------
 st.subheader("一、 確定親屬身分")
 age = st.slider("親屬年齡預估", 0, 125, 65)
@@ -110,14 +114,12 @@ for category, q_list in questions.items():
         user_responses[q["id"]] = st.selectbox(q["label"], [placeholder] + q["options"], key=q["id"])
 
 # ---------------------------------------------------------
-# 5. 權重邏輯 (均分線性邏輯 + 攔截攔截 + 99% 上限)
+# 5. 權重邏輯
 # ---------------------------------------------------------
 def calculate_precise_status(responses):
-    # --- 1. 身分判定 (佔 50分) ---
     id_ok = (age >= 65) or (is_aboriginal and age >= 55) or dementia or has_disability_card or is_pac
     identity_points = 50 if id_ok else min(40, (age / 65) * 40)
     
-    # --- 2. 身體狀況 Raw Score 計算 ---
     help_count = 0
     unable_count = 0
     for q_id, val in responses.items():
@@ -128,34 +130,20 @@ def calculate_precise_status(responses):
                     if idx == 1: help_count += 1
                     if idx == 2: unable_count += 1
     
-    # 設定權重點數：協助=1點, 無法=2點。 總分上限為 20點 (10題x2)
     current_raw_score = (help_count * 1) + (unable_count * 2)
-    
-    # 2 級門檻判定：2項協助(2點) 或 1項無法(2點) -> 即 Raw Score >= 2
     physical_needed = (help_count >= 2) or (unable_count >= 1)
     
-    # --- 3. 身體分數線性計算 (佔 50分) ---
     if physical_needed:
-        # 門檻已達：基礎分為 30。
-        # 剩餘可增分數 = 20 (50-30)；剩餘可增點數 = 18 (20點上限 - 2點門檻)
-        # 每多 1 點 Raw Score，增加 20/18 ≈ 1.11 分
         bonus = (current_raw_score - 2) * (20 / 18)
         physical_points = 30 + bonus
     else:
-        # 門檻未達：Raw Score 可能為 0 或 1 (即僅1項協助)
-        # 分數線性分配在 0~15 之間 (確保低於達標線)
         physical_points = current_raw_score * 15 
         
-    # --- 4. 總分與攔截邏輯 ---
     total_rate = identity_points + physical_points
-    
-    # 如果任一核心項不符，強制壓在 80 分以下
     if not id_ok or not physical_needed:
         total_rate = min(79.0, total_rate)
     
-    # 設定預估最高上限為 99.0%
     total_rate = min(99.0, total_rate)
-
     return total_rate, id_ok, physical_needed
 
 # ---------------------------------------------------------
@@ -178,17 +166,14 @@ if st.button("✨ 查看預估結果"):
             st.success("✅ **預估符合補助資格！**")
             st.write("親屬的身分條件與身體照顧需求皆已達標。建議可撥打 **長照專線1966** 申請正式評估。")
             st.balloons()
-            
         elif not id_ok and physical_needed:
             st.warning("🟡 **補助預估未達標：身分條件問題**")
             st.write("雖然親屬目前的身體狀況確實需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，故暫時無法申請政府長照補助。")
             st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。您可以找 UIA 好厝邊，為您安排合適的接送、輔具或居家改造方案。")
-
         elif id_ok and not physical_needed:
             st.warning("🟡 **補助預估未達標：身體狀況活動良好**")
             st.write("親屬的身分雖然符合，但目前「身體自理能力尚佳」，預估失能等級尚未達到補助標準 (CMS 2級)。")
             st.info("💡 **好厝邊建議：** 目前親屬健康狀況良好，建議維持規律運動。若您有生活機能提升需求（如預防失能運動），歡迎找 UIA 好厝邊諮詢！")
-            
         else:
             st.info("⚪ **補助預估指數較低**")
             st.write("親屬目前身分尚未屆齡且身體活動狀況良好，暫不符合政府長照補助資格。")
