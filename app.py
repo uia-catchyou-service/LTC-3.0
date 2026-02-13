@@ -64,13 +64,11 @@ for category, q_list in questions.items():
         user_responses[q["id"]] = st.selectbox(q["label"], [placeholder] + q["options"], key=q["id"])
 
 # ---------------------------------------------------------
-# 5. 權重邏輯 (身分 50% + 身體狀況 50%)
+# 5. 權重邏輯 (攔截邏輯已加入)
 # ---------------------------------------------------------
 def calculate_precise_status(responses):
     # --- 1. 身分判定 ---
     id_ok = (age >= 65) or (is_aboriginal and age >= 55) or dementia or has_disability_card or is_pac
-    
-    # 符合身分給 50 分，不符合則依年齡權重 (最高 40)
     identity_points = 50 if id_ok else min(40, (age / 65) * 40)
     
     # --- 2. 身體狀況判定邏輯 ---
@@ -89,34 +87,29 @@ def calculate_precise_status(responses):
     
     # --- 3. 身體分數計算 ---
     if physical_needed:
-        # 只要達標就拿 30 分基礎分，嚴重者最高加到 50 分
         severity_bonus = min(20, (help_count * 2 + unable_count * 5))
         physical_points = 30 + severity_bonus
     else:
-        # 未達標，分數壓低
-        physical_points = min(25, (help_count * 10 + unable_count * 0)) 
+        physical_points = min(25, (help_count * 10)) 
         
-    # --- 4. 總分攔截邏輯 (關鍵點) ---
+    # --- 4. 總分與攔截邏輯 ---
     total_rate = identity_points + physical_points
     
-    # 如果身分不符，總分最高只能是 79 分，絕對不讓它過 80 分
-    if not id_ok:
-        total_rate = min(79.0, total_rate)
-    
-    # 如果身體不符，即使年齡 100 歲，總分也要控制在 79 分以下
-    if not physical_needed:
+    # 只要有一項不符，強制壓在 80 分以下
+    if not id_ok or not physical_needed:
         total_rate = min(79.0, total_rate)
 
     return total_rate, id_ok, physical_needed
-    
+
 # ---------------------------------------------------------
-# 6. 送出結果與因果解釋
+# 6. 送出結果 (這裡已修正呼叫名稱)
 # ---------------------------------------------------------
 if st.button("✨ 查看預估結果"):
     if placeholder in user_responses.values():
         st.error("⚠️ 還有預估題目漏掉囉！請填完 10 個項目。")
     else:
-        total_rate, id_ok, physical_needed = calculate_status(user_responses)
+        # 【修正點】：函數名稱必須與上面定義的 calculate_precise_status 一致
+        total_rate, id_ok, physical_needed = calculate_precise_status(user_responses)
         
         st.markdown(f"""
         <div class="result-box">
@@ -131,13 +124,13 @@ if st.button("✨ 查看預估結果"):
             st.write("親屬的身分條件與身體照顧需求皆已達標。建議儘速撥打 **1966** 申請正式評估。")
             st.balloons()
             
-        # 邏輯分支二：身分問題 (儘管身體狀況需要照顧)
+        # 邏輯分支二：身分問題
         elif not id_ok and physical_needed:
             st.warning("🟡 **補助預估未達標：身分條件問題**")
             st.write("雖然親屬目前的身體狀況非常需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，故暫時無法申請政府資源。")
             st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。您可以諮詢 UIA，讓我們為您安排合適的自費照顧方案。")
 
-        # 邏輯分支三：身體狀況問題 (儘管身分符合)
+        # 邏輯分支三：身體狀況問題
         elif id_ok and not physical_needed:
             st.warning("🟡 **補助預估未達標：身體狀況活動良好**")
             st.write("親屬的身分雖然符合申請資格，但目前「身體自理能力尚佳」，預估失能等級尚未達到政府補助的最低標準 (CMS 2級)。")
