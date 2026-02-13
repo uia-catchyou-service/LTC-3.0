@@ -4,10 +4,10 @@ import numpy as np
 # 1. 網頁配置
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
-# --- CSS 樣式優化 (針對 Android 大字體優化版) ---
+# --- CSS 樣式優化 (整合強力修正 Android 掉字問題與橘色標題) ---
 st.markdown("""
     <style>
-    /* 標題優化：橘色、加大、且隨手機縮放 */
+    /* 1. 標題與副標題樣式 */
     h1 { 
         color: #F39800 !important; 
         text-align: center; 
@@ -15,8 +15,6 @@ st.markdown("""
         font-weight: 800 !important;
         line-height: 1.3 !important;
     }
-
-    /* 副標題樣式 */
     .sub-title {
         text-align: center; 
         color: #666; 
@@ -25,36 +23,40 @@ st.markdown("""
         margin-bottom: 2rem;
     }
 
-    /* 1. 下拉選單「未點開前」顯示的文字：強制換行並撐開高度 */
+    /* 2. 確保選單「外框」高度可以自動長高 */
     div[data-baseweb="select"] > div {
         height: auto !important;
         min-height: 3rem !important;
-        padding: 8px 5px !important; /* 增加內距，防止文字貼邊 */
+        padding: 5px 0 !important;
     }
 
-    div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p {
-        white-space: normal !important; 
-        overflow: visible !important;   
-        line-height: 1.5 !important; /* 增加行高讓長輩好閱讀 */
-        word-break: break-word !important;
-    }
-
-    /* 2. 下拉選單「點開後」的清單選項：強制換行，且增加上下間距 */
+    /* 3. 核心修正：解決選項點開後被截斷成 ... 的問題 (Android 強力修復) */
     div[role="listbox"] ul li div {
-        white-space: normal !important; 
+        white-space: normal !important; /* 允許自動換行 */
         line-height: 1.5 !important;
         height: auto !important;
-        min-height: 44px !important;
-        padding-top: 10px !important; /* 這裡是加強點：增加上方間距 */
-        padding-bottom: 10px !important; /* 這裡是加強點：增加下方間距 */
+        overflow: visible !important;   /* 讓溢出的文字顯示出來 */
+        display: block !important;     /* 確保不是彈性盒子導致的單行限制 */
+        padding: 10px 5px !important;
         word-break: break-word !important;
     }
 
-    /* 3. 題目標籤文字優化 */
-    .stSelectbox label p {
+    /* 4. 解決選單內容顯示不全與自動換行 */
+    [data-testid="stMarkdownContainer"] p {
         white-space: normal !important;
-        line-height: 1.4 !important;
-        font-weight: 600 !important;
+        word-break: break-word !important;
+        overflow: visible !important;
+    }
+
+    /* 5. 針對 Android 特有的內層容器進行高度釋放 */
+    div[data-baseweb="popover"] > div {
+        max-height: 550px !important; 
+    }
+    
+    /* 題目標籤文字樣式 */
+    .stSelectbox label p { 
+        white-space: normal !important; 
+        font-weight: 600 !important; 
         font-size: clamp(1rem, 4vw, 1.2rem) !important;
     }
 
@@ -71,7 +73,6 @@ st.markdown("""
 
 # --- 標題與副標題渲染 ---
 st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
-
 st.markdown("""
 <div class="sub-title">
     照顧路上，您辛苦了！<br>
