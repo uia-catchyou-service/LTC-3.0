@@ -142,4 +142,4 @@ if st.button("✨ 查看預估結果"):
             st.write("親屬目前身分尚未屆齡，且身體活動狀況良好，暫不符合政府長照補助資格。")
 
 st.markdown("---")
-st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊｜本檢測工具（以下簡稱「本工具」）係由「好厝邊」開發團隊獨立研發，旨在提供使用者初步之長照需求篩檢與衛教參考 。本工具之評估邏輯係 「參考」 衛生福利部公告之 ADLs (日常生活活動量表) 與 IADLs (工具性日常生活活動量表)  指標，經語意優化與數位化轉型而成，並非直接重製或轉載官方原始評估量表文件。</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; font-size:0.8rem; color:#888;">💌 UIA好厝邊｜本檢測工具（以下簡稱「本工具」）係由「好厝邊」開發團隊獨立研發，旨在提供使用者初步之長照需求篩檢與衛教參考 。本工具之評估邏輯係 「參考」 衛生福利部公告之 ADLs (日常生活活動量表) 與 IADLs (工具性日常生活活動量表)  指標，並非官方正式評估量表。預估結果不具備正式醫療或行政法律效力，實際補助資格應以各縣市照管中心之正式評估結果為準。</div>', unsafe_allow_html=True)
