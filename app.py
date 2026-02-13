@@ -63,7 +63,7 @@ col1, col2 = st.columns(2)
 with col1:
     is_aboriginal = st.checkbox("具有原住民身分")
     # 根據您的需求更新為：領有失能身心障礙證明
-    has_disability_card = st.checkbox("領有失能身心障礙證明") 
+    has_disability_card = st.checkbox("領有身心障礙證明") 
 with col2:
     # 加入 help 參數，會在介面顯示問號
     is_pac = st.checkbox(
