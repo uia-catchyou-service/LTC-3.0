@@ -60,13 +60,26 @@ st.markdown("""
         font-size: clamp(1rem, 4vw, 1.2rem) !important;
     }
 
-    /* 結果框優化 */
+    /* 結果框優化：確保數字不跑掉、維持一行 */
     .result-box {
         text-align: center;
         padding: 20px;
         border: 2px solid #F39800;
         border-radius: 20px;
         margin: 20px 0;
+        height: auto !important;
+    }
+
+    .result-num {
+        /* 關鍵：強制不換行 */
+        white-space: nowrap !important; 
+        /* 使用 clamp 讓字體有彈性，防止撐破框 */
+        font-size: clamp(2.5rem, 12vw, 3.8rem) !important; 
+        font-weight: bold !important;
+        color: #F39800;
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -185,7 +198,7 @@ if st.button("✨ 查看預估結果"):
         st.markdown(f"""
         <div class="result-box">
             <div style='color: #666; font-size: 1.1rem;'>政府補助資格預估指數</div>
-            <div style='font-size: 3.8rem; font-weight: bold; color: #F39800;'>{total_rate:.1f}%</div>
+            <div class="result-num">{total_rate:.1f}%</div>
         </div>
         """, unsafe_allow_html=True)
         
