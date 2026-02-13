@@ -5,17 +5,50 @@ import numpy as np
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
 # --- CSS 樣式優化 ---
+# --- CSS 樣式優化 (針對手機版優化) ---
 st.markdown("""
     <style>
-    h1 { color: #F39800 !important; text-align: center; }
-    .stSelectbox div[data-baseweb="select"] { border: 1px solid #F39800; }
-    .result-box { text-align: center; padding: 20px; border: 2px solid #F39800; border-radius: 20px; margin: 20px 0; }
-    .category-header { color: #2E86C1; border-bottom: 2px solid #AED6F1; padding-bottom: 5px; margin-top: 25px; margin-bottom: 10px; }
+    /* 標題優化：使用相對單位避免手機端過大 */
+    h1 { 
+        color: #F39800 !important; 
+        text-align: center; 
+        font-size: clamp(1.5rem, 5vw, 2.5rem) !important; 
+        line-height: 1.2 !important;
+    }
+    
+    /* 下拉選單文字大小調整 */
+    .stSelectbox label p {
+        font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
+        white-space: normal !important; /* 確保長標籤能自動換行不被切掉 */
+    }
+
+    /* 調整選單選項內的字體，避免在手機上爆掉 */
+    div[data-baseweb="select"] > div {
+        font-size: 0.9rem !important;
+    }
+
+    /* 類別標題優化 */
+    .category-header h4 {
+        font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important;
+    }
+
+    /* 預估指數結果框優化 */
+    .result-box h2 { font-size: 1.2rem !important; }
+    .result-box div { 
+        font-size: clamp(2.5rem, 10vw, 3.8rem) !important; 
+        word-break: break-all;
+    }
+
+    /* 免責聲明：縮小字體並確保完整呈現 */
+    .disclaimer-text {
+        text-align: justify;
+        font-size: 0.7rem !important;
+        color: #888;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
     </style>
     """, unsafe_allow_html=True)
-
-st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
-
 # ---------------------------------------------------------
 # 2. 10 項溫馨題目數據
 # ---------------------------------------------------------
