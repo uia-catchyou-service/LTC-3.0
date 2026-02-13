@@ -4,27 +4,44 @@ import numpy as np
 # 1. 網頁配置
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
-# --- CSS 樣式優化 (不限制字體大小，但確保文字完整呈現) ---
-# --- CSS 樣式優化 (確保下拉選項文字完全不消失) ---
+# --- CSS 樣式優化 (整合橘色標題與下拉選單不吃字邏輯) ---
 st.markdown("""
     <style>
-    /* 1. 下拉選單「未點開前」顯示的文字：強制換行並撐開高度 */
+    /* 1. 標題優化：橘色、加大、且隨手機縮放 */
+    h1 { 
+        color: #F39800 !important; 
+        text-align: center; 
+        font-size: clamp(2rem, 8vw, 3.5rem) !important; 
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+    }
+
+    /* 副標題樣式 */
+    .sub-title {
+        text-align: center; 
+        color: #666; 
+        line-height: 1.6; 
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-bottom: 2rem;
+    }
+
+    /* 2. 下拉選單「未點開前」：強制換行並撐開高度 */
     div[data-baseweb="select"] > div {
         height: auto !important;
-        min-height: 3rem !important; /* 給予基本高度 */
+        min-height: 3rem !important;
         padding: 5px 0 !important;
     }
 
     div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p {
-        white-space: normal !important; /* 允許換行 */
-        overflow: visible !important;   /* 確保文字溢出時可見 */
+        white-space: normal !important;
+        overflow: visible !important;
         line-height: 1.4 !important;
         word-break: break-word !important;
     }
 
-    /* 2. 下拉選單「點開後」的清單選項：強制換行，防止文字被切斷 */
+    /* 3. 下拉選單「點開後」的選項：強制換行 */
     div[role="listbox"] ul li div {
-        white-space: normal !important; /* 選項文字自動換行 */
+        white-space: normal !important;
         line-height: 1.5 !important;
         height: auto !important;
         min-height: 44px !important;
@@ -32,11 +49,21 @@ st.markdown("""
         word-break: break-word !important;
     }
 
-    /* 3. 針對長輩在大字體下的標籤文字優化 */
+    /* 4. 題目標籤文字優化 */
     .stSelectbox label p {
         white-space: normal !important;
         line-height: 1.4 !important;
         font-weight: 600 !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+    }
+
+    /* 結果框優化 */
+    .result-box {
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #F39800;
+        border-radius: 20px;
+        margin: 20px 0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -50,6 +77,7 @@ st.markdown("""
     跟著好厝邊簡單預估長照 3.0 補助資格。
 </div>
 """, unsafe_allow_html=True)
+
 # ---------------------------------------------------------
 # 2. 10 項溫馨題目數據
 # ---------------------------------------------------------
