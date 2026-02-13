@@ -45,7 +45,7 @@ age = st.slider("親屬年齡預估", 0, 125, 65)
 col1, col2 = st.columns(2)
 with col1:
     is_aboriginal = st.checkbox("具有原住民身分")
-    has_disability_card = st.checkbox("領有身心障礙證明")
+    has_disability_card = st.checkbox("領有失能身心障礙證明")
 with col2:
     is_pac = st.checkbox("急性後期整合照護 (PAC) 對象")
     dementia = st.checkbox("經醫師診斷為失智症者")
