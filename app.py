@@ -5,56 +5,43 @@ import numpy as np
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
 # --- CSS 樣式優化 (針對手機版優化) ---
+# --- CSS 樣式優化 (標題加大且支援手機) ---
 st.markdown("""
     <style>
-    /* 標題優化：使用相對單位避免手機端過大 */
+    /* 標題優化：加大字體並加粗 */
     h1 { 
         color: #F39800 !important; 
         text-align: center; 
-        font-size: clamp(1.5rem, 5vw, 2.5rem) !important; 
-        line-height: 1.2 !important;
+        /* 使用 clamp 讓最小字體從 2rem 起跳，最大到 3.5rem */
+        font-size: clamp(2rem, 8vw, 3.5rem) !important; 
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
     }
     
-    /* 下拉選單文字大小調整 */
-    .stSelectbox label p {
-        font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
-        white-space: normal !important;
+    /* 副標題優化 */
+    .sub-title {
+        text-align: center; 
+        color: #666; 
+        line-height: 1.6; 
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-bottom: 2rem;
     }
 
-    /* 調整選單選項內的字體 */
-    div[data-baseweb="select"] > div {
-        font-size: 0.9rem !important;
-    }
-
-    /* 類別標題優化 */
-    .category-header h4 {
-        font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important;
-    }
-
-    /* 預估指數結果框優化 */
+    /* 其餘 CSS 保持不變... */
+    .stSelectbox label p { font-size: clamp(0.9rem, 4vw, 1.1rem) !important; white-space: normal !important; }
+    div[data-baseweb="select"] > div { font-size: 0.9rem !important; }
+    .category-header h4 { font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important; }
     .result-box h2 { font-size: 1.2rem !important; }
-    .result-box div { 
-        font-size: clamp(2.5rem, 10vw, 3.8rem) !important; 
-        word-break: break-all;
-    }
-
-    /* 免責聲明 */
-    .disclaimer-text {
-        text-align: justify;
-        font-size: 0.7rem !important;
-        color: #888;
-        line-height: 1.4;
-        word-wrap: break-word;
-    }
+    .result-box div { font-size: clamp(2.5rem, 10vw, 3.8rem) !important; word-break: break-all; }
     </style>
     """, unsafe_allow_html=True)
 
-# 標題部分
+# --- 標題與副標題渲染 ---
 st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
 
-# 修正換行的副標題部分 (使用 <br> 標籤達成手動換行)
 st.markdown("""
-<div style="text-align: center; color: #666; line-height: 1.6; font-size: 1.1rem;">
+<div class="sub-title">
     照顧路上，您辛苦了！<br>
     跟著好厝邊簡單預估長照 3.0 補助資格。
 </div>
