@@ -49,10 +49,16 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 這裡就是被刪除的標題部分
+# 標題部分
 st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
-st.markdown('<div style="text-align: center; color: #666;">照顧路上，您辛苦了！跟著好厝邊簡單預估長照 3.0 補助資格。</div>', unsafe_allow_html=True)
 
+# 修正換行的副標題部分 (使用 <br> 標籤達成手動換行)
+st.markdown("""
+<div style="text-align: center; color: #666; line-height: 1.6; font-size: 1.1rem;">
+    照顧路上，您辛苦了！<br>
+    跟著好厝邊簡單預估長照 3.0 補助資格。
+</div>
+""", unsafe_allow_html=True)
 # ---------------------------------------------------------
 # 2. 10 項溫馨題目數據
 # ---------------------------------------------------------
