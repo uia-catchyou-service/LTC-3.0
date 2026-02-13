@@ -143,7 +143,7 @@ if st.button("✨ 查看預估結果"):
         
         if id_ok and physical_needed:
             st.success("✅ **預估符合補助資格！**")
-            st.write("親屬的身分條件與身體照顧需求皆已達標。建議儘速撥打 **長照專線1966** 申請正式評估。")
+            st.write("親屬的身分條件與身體照顧需求皆已達標。建議可撥打 **長照專線1966** 申請正式評估。")
             st.balloons()
             
         elif not id_ok and physical_needed:
