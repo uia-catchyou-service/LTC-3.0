@@ -108,7 +108,7 @@ def calculate_3_0_logic(responses, is_pac_status):
 # ---------------------------------------------------------
 # 6. 送出結果
 # ---------------------------------------------------------
-if st.button("✨ 點我開始評估"):
+if st.button("✨ 點我開始推估"):
     # 檢查是否有未填寫的題目
     if placeholder in user_responses.values():
         st.error("⚠️ 還有題目漏掉囉！請檢查上方是否有尚未選取的下拉選單。")
@@ -117,7 +117,7 @@ if st.button("✨ 點我開始評估"):
         
         st.markdown(f"""
         <div class="result-box">
-            <h2>推估媒合度</h2>
+            <h2>推估資格符合機率</h2>
             <div style='font-size: 3.5rem; font-weight: bold; color: #F39800;'>{prob*100:.1f}%</div>
         </div>
         """, unsafe_allow_html=True)
