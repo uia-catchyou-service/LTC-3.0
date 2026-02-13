@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 
 # 1. 網頁配置
-st.set_page_config(page_title="UIA好厝邊-長照補助小幫手", page_icon="🏡", layout="centered")
+st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
 # --- CSS 樣式優化 ---
 st.markdown("""
