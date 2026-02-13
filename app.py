@@ -4,48 +4,70 @@ import numpy as np
 # 1. 網頁配置
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
-# --- CSS 樣式優化 (針對手機版優化) ---
-# --- CSS 樣式優化 (標題加大且支援手機) ---
+# --- CSS 樣式優化 (不限制字體大小，但確保文字完整呈現) ---
 st.markdown("""
     <style>
-    /* 標題優化：加大字體並加粗 */
-    h1 { 
-        color: #F39800 !important; 
-        text-align: center; 
-        /* 使用 clamp 讓最小字體從 2rem 起跳，最大到 3.5rem */
-        font-size: clamp(2rem, 8vw, 3.5rem) !important; 
-        font-weight: 800 !important;
-        line-height: 1.3 !important;
-        margin-bottom: 0.5rem !important;
-    }
-    
-    /* 副標題優化 */
-    .sub-title {
-        text-align: center; 
-        color: #666; 
-        line-height: 1.6; 
-        font-size: clamp(1rem, 4vw, 1.2rem);
-        margin-bottom: 2rem;
+    /* 標題與標籤文字：不設定固定 px，讓它隨系統縮放，但確保能自動換行 */
+    h1, .sub-title, .stSelectbox label p {
+        color: #F39800 !important;
+        text-align: center;
+        white-space: normal !important; /* 確保題目太長會自動換行 */
+        word-break: break-word !important;
+        line-height: 1.4 !important;
     }
 
-    /* 其餘 CSS 保持不變... */
-    .stSelectbox label p { font-size: clamp(0.9rem, 4vw, 1.1rem) !important; white-space: normal !important; }
-    div[data-baseweb="select"] > div { font-size: 0.9rem !important; }
-    .category-header h4 { font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important; }
-    .result-box h2 { font-size: 1.2rem !important; }
-    .result-box div { font-size: clamp(2.5rem, 10vw, 3.8rem) !important; word-break: break-all; }
+    /* 核心修正：解決下拉選單文字消失的問題 */
+    /* 1. 讓選單外框高度隨內容自動伸縮 */
+    div[data-baseweb="select"] > div {
+        height: auto !important; 
+        min-height: 45px !important; /* 設定一個舒服的最小高度 */
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    /* 2. 讓選單內的文字（顯示出來的那行）可以自動換行 */
+    div[data-baseweb="select"] div[data-testid="stMarkdownContainer"] p {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        line-height: 1.4 !important;
+    }
+
+    /* 3. 展開後的下拉選項清單：也要能自動換行，不能被切掉 */
+    ul[role="listbox"] li div {
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.4 !important;
+    }
+
+    /* 結果框優化：確保數字在大字體下也不會撐破框 */
+    .result-box {
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #F39800;
+        border-radius: 20px;
+        margin: 20px 0;
+        height: auto !important;
+    }
+    .result-box div {
+        word-break: break-all !important;
+        white-space: normal !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 標題與副標題渲染 ---
+# --- 標題與副標題 ---
 st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
-
 st.markdown("""
-<div class="sub-title">
+<div style="text-align: center; color: #666; line-height: 1.6;">
     照顧路上，您辛苦了！<br>
     跟著好厝邊簡單預估長照 3.0 補助資格。
 </div>
 """, unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# 後續 10 題與邏輯計算保持不變...
+# ---------------------------------------------------------
 # ---------------------------------------------------------
 # 2. 10 項溫馨題目數據
 # ---------------------------------------------------------
@@ -97,7 +119,7 @@ with col2:
 # 4. 第二步：日常生活預估
 # ---------------------------------------------------------
 st.markdown("---")
-st.subheader("二、 日常生活近況 (近一個月)")
+st.subheader("二、 最近一個月的生活")
 placeholder = "--- 請選擇親屬狀況 ---"
 user_responses = {}
 
