@@ -40,6 +40,16 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
+# --- 標題渲染 ---
+st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
+st.markdown("""
+<div class="sub-title">
+    照顧路上，您辛苦了！<br>
+    跟著好厝邊簡單預估長照 3.0 補助資格。
+</div>
+""", unsafe_allow_html=True)
+
 # ---------------------------------------------------------
 # 2. 10 項溫馨題目數據
 # ---------------------------------------------------------
