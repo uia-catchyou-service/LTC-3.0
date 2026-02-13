@@ -77,14 +77,14 @@ for category, q_list in questions.items():
         user_responses[q["id"]] = st.selectbox(q["label"], [placeholder] + q["options"], key=q["id"])
 
 # ---------------------------------------------------------
-# 5. 權重邏輯 (攔截邏輯與 99% 上限)
+# 5. 權重邏輯 (均分線性邏輯 + 攔截攔截 + 99% 上限)
 # ---------------------------------------------------------
 def calculate_precise_status(responses):
-    # --- 1. 身分判定 ---
+    # --- 1. 身分判定 (佔 50分) ---
     id_ok = (age >= 65) or (is_aboriginal and age >= 55) or dementia or has_disability_card or is_pac
     identity_points = 50 if id_ok else min(40, (age / 65) * 40)
     
-    # --- 2. 身體狀況判定邏輯 ---
+    # --- 2. 身體狀況 Raw Score 計算 ---
     help_count = 0
     unable_count = 0
     for q_id, val in responses.items():
@@ -95,24 +95,32 @@ def calculate_precise_status(responses):
                     if idx == 1: help_count += 1
                     if idx == 2: unable_count += 1
     
-    # 2 級門檻判定
+    # 設定權重點數：協助=1點, 無法=2點。 總分上限為 20點 (10題x2)
+    current_raw_score = (help_count * 1) + (unable_count * 2)
+    
+    # 2 級門檻判定：2項協助(2點) 或 1項無法(2點) -> 即 Raw Score >= 2
     physical_needed = (help_count >= 2) or (unable_count >= 1)
     
-    # --- 3. 身體分數計算 ---
+    # --- 3. 身體分數線性計算 (佔 50分) ---
     if physical_needed:
-        severity_bonus = min(20, (help_count * 2 + unable_count * 5))
-        physical_points = 30 + severity_bonus
+        # 門檻已達：基礎分為 30。
+        # 剩餘可增分數 = 20 (50-30)；剩餘可增點數 = 18 (20點上限 - 2點門檻)
+        # 每多 1 點 Raw Score，增加 20/18 ≈ 1.11 分
+        bonus = (current_raw_score - 2) * (20 / 18)
+        physical_points = 30 + bonus
     else:
-        physical_points = min(25, (help_count * 10)) 
+        # 門檻未達：Raw Score 可能為 0 或 1 (即僅1項協助)
+        # 分數線性分配在 0~15 之間 (確保低於達標線)
+        physical_points = current_raw_score * 15 
         
     # --- 4. 總分與攔截邏輯 ---
     total_rate = identity_points + physical_points
     
-    # 只要有一項不符，強制壓在 80 分以下
+    # 如果任一核心項不符，強制壓在 80 分以下
     if not id_ok or not physical_needed:
         total_rate = min(79.0, total_rate)
     
-    # 設定預估最高上限為 99%
+    # 設定預估最高上限為 99.0%
     total_rate = min(99.0, total_rate)
 
     return total_rate, id_ok, physical_needed
@@ -140,17 +148,17 @@ if st.button("✨ 查看預估結果"):
             
         elif not id_ok and physical_needed:
             st.warning("🟡 **補助預估未達標：身分條件問題**")
-            st.write("雖然親屬目前的身體狀況非常需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，故暫時無法申請長照補助。")
-            st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。您可以找UIA好厝邊，為您安排合適的接送、輔具或居家改造廠商。")
+            st.write("雖然親屬目前的身體狀況確實需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，故暫時無法申請政府長照補助。")
+            st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。您可以找 UIA 好厝邊，為您安排合適的接送、輔具或居家改造方案。")
 
         elif id_ok and not physical_needed:
             st.warning("🟡 **補助預估未達標：身體狀況活動良好**")
-            st.write("親屬的身分雖然符合申請資格，但目前「身體自理能力尚佳」，預估失能等級尚未達到政府補助的最低標準 (CMS 2級)。")
-            st.info("💡 **好厝邊建議：** 目前親屬健康狀況良好，建議維持規律運動維持健康。若您有接送、輔具或居家改造需求歡迎找UIA好厝邊幫您安排！")
+            st.write("親屬的身分雖然符合，但目前「身體自理能力尚佳」，預估失能等級尚未達到補助標準 (CMS 2級)。")
+            st.info("💡 **好厝邊建議：** 目前親屬健康狀況良好，建議維持規律運動。若您有生活機能提升需求（如預防失能運動），歡迎找 UIA 好厝邊諮詢！")
             
         else:
             st.info("⚪ **補助預估指數較低**")
             st.write("親屬目前身分尚未屆齡且身體活動狀況良好，暫不符合政府長照補助資格。")
 
 st.markdown("---")
-st.markdown('<div style="text-align:center; font-size:0.75rem; color:#888; line-height:1.6;">💌 UIA好厝邊｜本檢測工具（以下簡稱「本工具」）係由「好厝邊」開發團隊獨立研發，旨在提供使用者初步之長照需求篩檢與衛教參考 。本工具之評估邏輯係 「參考」 衛生福利部公告之 ADLs (日常生活活動量表) 與 IADLs (工具性日常生活活動量表) 指標，並非官方正式評估量表。預估結果不具備正式醫療或行政法律效力，實際補助資格應以各縣市照管中心之正式評估結果為準。</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; font-size:0.75rem; color:#888; line-height:1.6;">💌 UIA好厝邊｜本檢測工具（以下簡稱「本工具」）係由「好厝邊」開發團隊獨立研發，旨在提供使用者初步之長照需求篩檢與衛教參考 。本工具之評估邏輯係 「參考」 衛生福利部公告之 ADLs 與 IADLs 指標，並非官方正式評估量表。預估結果不具備正式醫療或行政法律效力，實際補助資格應以各縣市照管中心之正式評估結果為準。</div>', unsafe_allow_html=True)
