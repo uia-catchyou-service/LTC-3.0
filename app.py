@@ -60,7 +60,7 @@ with col1:
     is_aboriginal = st.checkbox("具有原住民身分")
     has_disability_card = st.checkbox("領有身心障礙證明") 
 with col2:
-    is_pac = st.checkbox("急性後期整合照護 (PAC) 對象", help=pac_help_text)
+    is_pac = st.checkbox("急性後期整合照護對象", help=pac_help_text)
     dementia = st.checkbox("經醫師診斷為失智症者")
 
 # ---------------------------------------------------------
