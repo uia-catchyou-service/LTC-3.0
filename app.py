@@ -5,7 +5,59 @@ import numpy as np
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
 # --- CSS 樣式優化 (整合強力修正 Android 掉字問題與橘色標題) ---
+st.markdown("""
+    <style>
+    /* 標題樣式：橘色、置中、隨螢幕縮放 */
+    h1 { 
+        color: #F39800 !important; 
+        text-align: center !important; 
+        font-size: clamp(2rem, 8vw, 3.5rem) !important; 
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* 副標題樣式：置中、灰色 */
+    .sub-title {
+        text-align: center !important; 
+        color: #666 !important; 
+        line-height: 1.6 !important; 
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        margin-bottom: 2rem !important;
+    }
+
+    /* 下拉選單文字基礎換行 */
+    .stSelectbox label p, div[data-baseweb="select"] p { 
+        white-space: normal !important; 
+        word-break: break-word !important;
+    }
+
+    /* 結果框優化：確保數字單行呈現 */
+    .result-box {
+        text-align: center;
+        padding: 20px 5px !important;
+        border: 2px solid #F39800;
+        border-radius: 20px;
+        margin: 20px 0;
+    }
+
+    .result-num {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: baseline !important;
+        white-space: nowrap !important; 
+        font-size: clamp(2rem, 10vw, 3rem) !important; 
+        font-weight: bold !important;
+        color: #F39800;
+        width: 100%;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- 標題與副標題渲染 ---
 st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
+
 st.markdown("""
 <div class="sub-title">
     照顧路上，您辛苦了！<br>
