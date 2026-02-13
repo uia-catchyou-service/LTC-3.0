@@ -4,10 +4,10 @@ import numpy as np
 # 1. 網頁配置
 st.set_page_config(page_title="UIA好厝邊-長照補助資格預估器", page_icon="🏡", layout="centered")
 
-# --- CSS 樣式優化 (整合橘色標題與下拉選單不吃字邏輯) ---
+# --- CSS 樣式優化 (針對 Android 大字體優化版) ---
 st.markdown("""
     <style>
-    /* 1. 標題優化：橘色、加大、且隨手機縮放 */
+    /* 標題優化：橘色、加大、且隨手機縮放 */
     h1 { 
         color: #F39800 !important; 
         text-align: center; 
@@ -25,31 +25,32 @@ st.markdown("""
         margin-bottom: 2rem;
     }
 
-    /* 2. 下拉選單「未點開前」：強制換行並撐開高度 */
+    /* 1. 下拉選單「未點開前」顯示的文字：強制換行並撐開高度 */
     div[data-baseweb="select"] > div {
         height: auto !important;
         min-height: 3rem !important;
-        padding: 5px 0 !important;
+        padding: 8px 5px !important; /* 增加內距，防止文字貼邊 */
     }
 
     div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p {
-        white-space: normal !important;
-        overflow: visible !important;
-        line-height: 1.4 !important;
+        white-space: normal !important; 
+        overflow: visible !important;   
+        line-height: 1.5 !important; /* 增加行高讓長輩好閱讀 */
         word-break: break-word !important;
     }
 
-    /* 3. 下拉選單「點開後」的選項：強制換行 */
+    /* 2. 下拉選單「點開後」的清單選項：強制換行，且增加上下間距 */
     div[role="listbox"] ul li div {
-        white-space: normal !important;
+        white-space: normal !important; 
         line-height: 1.5 !important;
         height: auto !important;
         min-height: 44px !important;
-        padding: 8px 0 !important;
+        padding-top: 10px !important; /* 這裡是加強點：增加上方間距 */
+        padding-bottom: 10px !important; /* 這裡是加強點：增加下方間距 */
         word-break: break-word !important;
     }
 
-    /* 4. 題目標籤文字優化 */
+    /* 3. 題目標籤文字優化 */
     .stSelectbox label p {
         white-space: normal !important;
         line-height: 1.4 !important;
