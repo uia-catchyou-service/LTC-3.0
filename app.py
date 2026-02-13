@@ -60,26 +60,36 @@ st.markdown("""
         font-size: clamp(1rem, 4vw, 1.2rem) !important;
     }
 
-    /* 結果框優化：確保數字不跑掉、維持一行 */
+    /* 結果框優化：強制數字單行呈現 */
     .result-box {
         text-align: center;
-        padding: 20px;
+        padding: 15px 5px !important; 
         border: 2px solid #F39800;
         border-radius: 20px;
         margin: 20px 0;
-        height: auto !important;
+        width: 100% !important;
+        /* 確保容器有彈性 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .result-num {
-        /* 關鍵：強制不換行 */
+        /* 1. 強制所有內容鎖在同一行 */
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: baseline !important;
         white-space: nowrap !important; 
-        /* 使用 clamp 讓字體有彈性，防止撐破框 */
-        font-size: clamp(2.5rem, 12vw, 3.8rem) !important; 
+        
+        /* 2. 稍微縮小基礎字級，爭取物理空間 */
+        font-size: clamp(2.2rem, 11vw, 3.2rem) !important; 
         font-weight: bold !important;
         color: #F39800;
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
+        
+        /* 3. 防止內距造成的擠壓 */
+        width: auto !important;
+        max-width: 100% !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -117,7 +127,7 @@ questions = {
 # 3. 第一步：基本身分
 # ---------------------------------------------------------
 st.subheader("一、 確定親屬身分")
-age = st.slider("親屬年齡預估", 0, 125, 65)
+age = st.slider("親屬年齡", 0, 125, 65)
 
 pac_help_text = """
 **PAC 計畫對象包含：**
