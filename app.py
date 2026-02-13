@@ -59,6 +59,31 @@ st.markdown("""
 st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
 
 st.markdown("""
+<style>
+    /* 修正下拉選單文字被截斷的問題 */
+    div[data-baseweb="select"] > div {
+        white-space: normal !important; /* 允許換行 */
+        line-height: 1.2 !important;   /* 調整行高 */
+    }
+    
+    /* 針對選單展開後的選項列表進行優化 */
+    ul[role="listbox"] li {
+        white-space: normal !important;
+        word-break: break-all !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        height: auto !important; /* 讓高度隨文字增加 */
+    }
+
+    /* 調整手機版字體大小，避免過大導致空間不足 */
+    @media (max-width: 640px) {
+        .stSelectbox label {
+            font-size: 0.9rem !important;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
+st.markdown("""
 <div class="sub-title">
     照顧路上，您辛苦了！<br>
     跟著好厝邊簡單預估長照 3.0 補助資格。
