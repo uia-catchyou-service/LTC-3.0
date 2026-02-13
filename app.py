@@ -57,7 +57,7 @@ with col2:
 st.markdown("---")
 st.subheader("二、 日常生活評估 (近一個月)")
 
-placeholder = "--- 請選擇長輩狀況 ---"
+placeholder = "--- 請選擇親屬狀況 ---"
 user_responses = {}
 
 for category, q_list in questions.items():
