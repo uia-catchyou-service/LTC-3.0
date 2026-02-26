@@ -60,7 +60,7 @@ st.markdown("<h1>長照補助資格預估器</h1>", unsafe_allow_html=True)
 
 st.markdown("""
 <div class="sub-title">
-    花費1分鐘，跟著UIA好厝邊簡單預估長照補助資格。
+    只需1分鐘，UIA好厝邊幫您預估是否符合長照補助資格！
 </div>
 """, unsafe_allow_html=True)
 
