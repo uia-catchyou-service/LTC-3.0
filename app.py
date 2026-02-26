@@ -177,15 +177,25 @@ if st.button("✨ 查看預估結果"):
             st.write("親屬的身分條件與身體照顧需求皆已達標。建議可撥打 **長照專線1966** 申請正式評估。")
         elif not id_ok and physical_needed:
             st.warning("🟡 **補助預估未達標：身分條件問題**")
-            st.write("雖然親屬目前的身體狀況確實需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，故暫時無法申請政府長照補助。")
-            st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。您可以找UIA好厝邊為您安排合適服務。")
+            st.write("親屬目前的身體狀況確實需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，暫時無法申請政府長照補助。")
+            st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。UIA好厝邊專為您安排彈性的照顧相關服務。")
         elif id_ok and not physical_needed:
             st.warning("🟡 **補助預估未達標：身體狀況活動良好**")
-            st.write("親屬的身分雖然符合，但目前「身體自理能力尚佳」，預估失能等級尚未達到補助標準 (CMS 2級)。")
+            st.write("親屬的身分雖然符合，但目前「身體自理能力尚佳」，預估失能等級尚未達到補助標準。")
             st.info("💡 **好厝邊建議：** 目前親屬健康狀況良好，建議維持規律運動。若有接送、輔具或居家改造需求歡迎找UIA好厝邊協助您安排！")
         else:
             st.info("⚪ **補助預估指數較低**")
             st.write("親屬目前身分尚未屆齡且身體活動狀況良好，暫不符合政府長照補助資格。")
 
 st.markdown("---")
-st.markdown('<div style="text-align:center; font-size:0.75rem; color:#888; line-height:1.6;">💌 UIA好厝邊｜本檢測工具（以下簡稱「本工具」）係由「好厝邊」團隊獨立研發，旨在提供使用者初步之長照需求篩檢 。本工具之評估邏輯係 「參考」 衛生福利部公告之 ADLs 與 IADLs 指標，並非官方正式評估量表。預估結果不具備正式醫療或行政法律效力，實際補助資格應以各縣市照管中心之正式評估結果為準。</div>', unsafe_allow_html=True)
+st.markdown("""
+    <div style="background-color: #FFF9F0; padding: 25px; border-radius: 15px; border: 1px solid #F39800; line-height: 1.8;">
+        <p style="text-align: center; font-size: 1.1rem; color: #F39800; font-weight: 800; margin-bottom: 10px;">
+            政府資源有限，但 UIA 好厝邊的用心無限。<br>
+            無論預估結果是否符合補助門檻，UIA 好厝邊致力於安排最適合的照護相關解決方案。
+        </p>
+        <p style="text-align: center; font-size: 0.75rem; color: #888; margin-top: 15px;">
+            💌 UIA好厝邊｜本工具係由「好厝邊」團隊獨立研發，旨在提供初步之長照需求篩檢。評估邏輯參考衛福部公告之 ADLs 與 IADLs 指標，非官方正式量表。預估結果不具法律效力，實際補助資格應以各縣市照管中心評估為準。
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
