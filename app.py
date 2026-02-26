@@ -189,13 +189,10 @@ if st.button("✨ 查看預估結果"):
 
 st.markdown("---")
 st.markdown("""
-    <div style="background-color: #FFF9F0; padding: 25px; border-radius: 15px; border: 1px solid #F39800; line-height: 1.8;">
-        <p style="text-align: center; font-size: 1.1rem; color: #F39800; font-weight: 800; margin-bottom: 10px;">
-            政府資源有限，但 UIA 好厝邊的用心無限。<br>
-            無論預估結果是否符合補助門檻，UIA 好厝邊致力於安排最適合的照護相關解決方案。
-        </p>
-        <p style="text-align: center; font-size: 0.75rem; color: #888; margin-top: 15px;">
+    <div style="text-align: center; line-height: 1.6;">
+        <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
             💌 UIA好厝邊｜本工具係由「好厝邊」團隊獨立研發，旨在提供初步之長照需求篩檢。評估邏輯參考衛福部公告之 ADLs 與 IADLs 指標，非官方正式量表。預估結果不具法律效力，實際補助資格應以各縣市照管中心評估為準。
+            政府資源有限，但UIA好厝邊的用心無限。無論預估結果是否符合補助門檻，UIA好厝邊致力於安排最適合的照護相關解決方案。
         </p>
     </div>
     """, unsafe_allow_html=True)
