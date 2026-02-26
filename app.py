@@ -160,7 +160,7 @@ def calculate_precise_status(responses):
 # ---------------------------------------------------------
 if st.button("✨ 查看預估結果"):
     if placeholder in user_responses.values():
-        st.error("⚠️ 還有預估題目漏掉囉！請填完 10 個項目。")
+        st.error("⚠️ 還有題目漏掉囉！請填完所有題目。")
     else:
         total_rate, id_ok, physical_needed = calculate_precise_status(user_responses)
         
@@ -177,11 +177,11 @@ if st.button("✨ 查看預估結果"):
         elif not id_ok and physical_needed:
             st.warning("🟡 **補助預估未達標：身分條件問題**")
             st.write("親屬目前的身體狀況確實需要照顧，但因「年齡或身分證明」尚未符合政府法定補助門檻，暫時無法申請政府長照補助。")
-            st.info("💡 **好厝邊建議：** 雖然政府暫無補助，但照顧不能等。UIA好厝邊專為您安排彈性的照顧相關服務。")
+            st.info("💡 **建議：** 照顧不能等，讓UIA好厝邊為您安排合適的照顧相關服務。")
         elif id_ok and not physical_needed:
             st.warning("🟡 **補助預估未達標：身體狀況活動良好**")
             st.write("親屬的身分雖然符合，但目前「身體自理能力尚佳」，預估失能等級尚未達到補助標準。")
-            st.info("💡 **好厝邊建議：** 目前親屬健康狀況良好，建議維持規律運動。若有接送、輔具或居家改造需求歡迎找UIA好厝邊協助您安排！")
+            st.info("💡 **建議：** 目前親屬健康狀況良好，建議維持規律運動。若有接送、輔具或居家改造需求歡迎找UIA好厝邊協助您安排！")
         else:
             st.info("⚪ **補助預估指數較低**")
             st.write("親屬目前身分尚未屆齡且身體活動狀況良好，暫不符合政府長照補助資格。")
