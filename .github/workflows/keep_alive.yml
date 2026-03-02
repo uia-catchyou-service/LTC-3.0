@@ -2,13 +2,18 @@ name: Keep Streamlit App Awake
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    # 改為每 3 小時執行一次，確保覆蓋率
+    - cron: '0 */3 * * *'
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Ping
+      - name: Send Deep Ping
         run: |
-          curl -I https://uia-catchyou.streamlit.app/
+          # 加入 User-Agent 模擬真實瀏覽器，並增加重試機制
+          curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
+               -L https://uia-catchyou.streamlit.app/ \
+               --retry 3 \
+               --retry-delay 5
