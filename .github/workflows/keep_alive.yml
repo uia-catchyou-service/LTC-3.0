@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Deep Ping
-        run: |
-          # 加入 User-Agent 模擬真實瀏覽器，並增加重試機制
-          curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
-               -L https://uia-catchyou.streamlit.app/ \
-               --retry 3 \
-               --retry-delay 5
+run: |
+  # -I 代表只抓取 Header，不下載網頁內容，減少被判定為攻擊的機率
+  # --max-redirs 5 限制跳轉次數，避免 50 次死循環
+  curl -I --max-redirs 5 -A "Mozilla/5.0" https://uia-catchyou.streamlit.app/
