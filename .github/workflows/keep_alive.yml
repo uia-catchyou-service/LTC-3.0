@@ -15,6 +15,6 @@ jobs:
           # 去掉 -I，改用 -sL 模擬真實訪問
           curl -sL --max-redirs 5 \
           -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-          "https://uia-catchyou.streamlit.app/" > /dev/null
+          "https://catch-you-ltc3-0.hf.space" > /dev/null
           
           echo "Ping sent at $(date)"
